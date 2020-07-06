@@ -7,7 +7,7 @@ Airflow dag to orchestrate these scripts : dag/resource_and_metadata_storage_wor
 ## Send to Linkproxy
 File : 1_send_resources_to_linkproxy
 
-Get the latest modified datasets/resources from data.gouv.fr and sends a check to link-proxy. (hosted in another server)
+Get the latest modified datasets/resources from data.gouv.fr and send a check to link-proxy. (hosted in another server)
 
 Keeps tab on when the script has been run and which checks have been created.
 
@@ -22,9 +22,9 @@ python orchestrator.py run
 ## Webhook collector
 File : 2_flask_subscriber_to_linkproxy
 
-Prequisite : Subscribe to linkproxy webhook with correct url
+Prerequisite : Subscribe to linkproxy webhook with correct url
 
-Linkproxy send a message for every document that it is storing into Minio. This flask app only consist to wait for new message from linkproxy and store it locally.
+Linkproxy send a message for every document that it is storing into Minio. This flask app only consists to wait for new messages from linkproxy and store it locally.
 
 ```
 python 2_flask_subscriber_to_linkproxy.py
@@ -33,7 +33,7 @@ python 2_flask_subscriber_to_linkproxy.py
 ## CSV Dective Analysis
 File : 3_csv_detective_analysis
 
-Once documents are stored locally, this script runs every new document into csvdetective to extract metadata.
+Once documents are stored locally, this script download and runs every new resources into csvdetective to extract metadata.
 
 ```
 python 3_csv_detective_analysis.py
@@ -43,3 +43,7 @@ python 3_csv_detective_analysis.py
 File : 4_inges_elk
 
 Once metadata is collected, this script send results to an elasticsearch.
+
+```
+python 4_inges_elk.py
+```
