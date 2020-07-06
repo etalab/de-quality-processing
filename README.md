@@ -40,10 +40,10 @@ python 3_csv_detective_analysis.py
 ```
 
 ## Send metadata to ELK
-File : 4_inges_elk
+File : 4_ingest_elk
 
 Once metadata is collected, this script send results to an elasticsearch.
 
 ```
-python 4_inges_elk.py
+python 4_ingest_elk.py
 ```
