@@ -60,6 +60,7 @@ def filter_mimes_to_send(df, today):
         df['url_extension'] = df['url'].apply(lambda x: None if x != x else str(x).split('/')[-1].split('.')[1] if(len(str(x).split('/')[-1].split('.')) > 1) else None)
         df[(df['catalog_extension'] == 'csv') | (df['python_extension'] == 'csv') | (df['url_extension'] == 'csv') | (df['catalog_extension'] == 'xls') | (df['python_extension'] == 'xls') | (df['url_extension'] == 'xls') | (df['catalog_extension'] == 'zip') | (df['python_extension'] == 'zip') | (df['url_extension'] == 'zip')]
         df.to_csv("./catalogs/"+today+"-check.csv")
+        click.echo("Filter Catalok OK. Saved.")
     except Exception as e:
         click.echo("Filter resources to send KO. Bye!")
         exit()
@@ -97,7 +98,7 @@ def downloadCatalog(today):
     try:
         url = 'https://www.data.gouv.fr/fr/datasets/r/4babf5f2-6a9c-45b5-9144-ca5eae6a7a6d'
         urllib.request.urlretrieve(url, './catalogs/'+today+'.csv')
-        print("yep")
+        click.echo("Download Catalog OK.")
     except Exception as e:
         click.echo("Download Catalog KO. Bye!")
         exit()
@@ -163,6 +164,7 @@ def run():
         exit()   
     filterCatalog(today)
     manageResourcesToSend(today)
+    click.echo("Sent to linkproxy OK.")
 
 if __name__ == "__main__":
     cli()
