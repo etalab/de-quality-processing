@@ -4,4 +4,5 @@ orchestrator.db
 repotest
 static/
 csvdetective/analysis_results/
-
+catalogs/
+venv/

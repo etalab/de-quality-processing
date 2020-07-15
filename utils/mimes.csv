@@ -1,0 +1,119 @@
+mime,extension
+application/octet-stream,
+application/pdf,pdf
+,
+application/vnd.oasis.opendocument.spreadsheet,ods
+application/vnd.ms-excel,xls
+text/csv,csv
+application/zip,zip
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,xls
+text/xml,xml
+application/json; charset=utf-8,json
+application/vnd.oasis.opendocument.presentation,odp
+application/json,json
+image/jpeg,jpeg
+application/vnd.openxmlformats-officedocument.wordprocessingml.document,docx
+application/csv; charset=utf-8,csv
+application/xlsx,xlsx
+text/plain,txt
+text/html,html
+application/xml,xml
+application/vnd.oasis.opendocument.text,odt
+text/html; charset=utf-8,html
+application/zip; charset=utf-8,zip
+application/json; charset=UTF-8,json
+text/xml; charset=utf-8,xml
+application/csv,csv
+text/html; charset=iso-8859-1,html
+text/html; charset=UTF-8,html
+image/tiff,tiff
+application/vnd.google-earth.kml+xml,kml
+application/vnd.google-earth.kmz,kmz
+application/x-7z-compressed,7z
+application/shape,
+application/pdf; charset=utf-8,pdf
+application/xls; charset=utf-8,xls
+text/html;charset=UTF-8,html
+application/kml,kml
+application/zip; charset=UTF-8,zip
+application/mif,mif
+text/plain; charset=utf-8,txt
+application/x-ms-application,application
+application/vnd.ms-excel.sheet.binary.macroenabled.12,xlsb
+text/html;charset=utf-8,html
+application/vnd.geo+json,geojson
+text/plain; charset=UTF-8,txt
+text/html;charset=iso-8859-1,html
+text/xml;charset=UTF-8,xml
+application/rtf,rtf
+application/msword,doc
+text/csv;charset=UTF-8,csv
+application/vnd.oasis.opendocument.graphics,odg
+text/html; charset=utf8,html
+application/json;charset=UTF-8,json
+application/gml+xml; version=3.2,xml
+misc,
+text/calendar,ics
+application/rss+xml; charset=utf-8,xml
+text/html;charset=ISO-8859-1,html
+application/osm3s+xml,xml
+application/xhtml+xml;charset=UTF-8,xml
+application/vnd.ms-powerpoint,ppt
+text/csv; charset=utf-8,csv
+application/zip; charset=binary,zip
+application/json;charset=utf-8,json
+text/xml;charset=utf-8,xml
+application/force-download,
+image/png,png
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8,xls
+application/x-gzip,gz
+application/x-download,
+application/rdf+xml,rdf
+application/download,
+application/x-zip-compressed,zip
+application/vnd.openxmlformats-officedocument.wordprocessingml.document; charset=utf-8,docx
+application/vnd.ogc.se_xml,xml
+application/geo+json,geojson
+"""application/pdf""",pdf
+application/xml;charset=utf-8,xml
+text/csv; charset=UTF-8,csv
+image/png; charset=utf-8,png
+text/javascript; charset=utf-8,js
+image/svg+xml,xml
+application/vnd.openxmlformats-officedocument.presentationml.presentation,pptx
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8,xlsx
+application/rar,rar
+text/plain;charset=UTF-8,txt
+application/pdf; charset=UTF-8,pdf
+text/html; charset=iso-8859-15,html
+text/html; charset=latin-1,html
+text/x-diff,
+application/rss+xml;charset=UTF-8,xml
+application/zip;charset=UTF-8,zip
+text/html; charset=utf-8;charset=utf-8,html
+text/json; charset=utf-8,json
+application/x-tar,tar
+application/x-rar-compressed,rar
+application/vnd.ogc.se_xml;charset=UTF-8,xml
+application/gzip,gz
+application/xls,xls
+text/calendar; charset=utf-8,ics
+application/x-bzip2,bz2
+application/x-qgis,qgis
+application/png,png
+text/html; charset=utf-8; charset=utf-8,html
+image/gif,gif
+text/plain; charset=ISO-8859-1,txt
+application/ld+json;charset=UTF-8,json
+application/tar+gzip,tar.gz
+text/turtle; charset=UTF-8,ttl
+text/xml; subtype=gml/3.1.1,xml
+application/vnd.ms-excel; charset=utf-8,xls
+application/octet-stream; charset=utf-8,
+application/postscript,ps
+text/html; charset=ISO-8859-1,html
+application/kml; charset=utf-8,kml
+text/tab-separated-value; charset=utf-8,txt
+application/msword; charset=utf-8,doc
+text/xls,xls
+text/csv;charset=utf-8,csv
