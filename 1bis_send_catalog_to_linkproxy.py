@@ -164,7 +164,6 @@ def run():
     today = todaydate.strftime("%Y-%m-%d")
     # To change tout les samedi
     if findDay(today) == 6:
-        click.echo("Already downloaded!")
         downloadCatalog(today)
     else:
         click.echo("Not a good day. Bye!")
