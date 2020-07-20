@@ -65,7 +65,7 @@ def modified_datasets(last_run):
 
 
 def send_to_linkproxy(url):
-    r = requests.post("http://pad-01.infra.data.gouv.fr:5000", json={
+    r = requests.post("http://localhost:5010", json={
         "location": url
     })
     r.raise_for_status()
