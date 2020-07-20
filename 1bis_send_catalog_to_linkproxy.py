@@ -58,7 +58,8 @@ def filter_mimes_to_send(df, today):
         dfmime = dfmime.rename(columns={'mime':'resource_mime_python','catalog_extension':'python_extension'})
         df = pd.merge(df,dfmime,on='resource_mime_python',how='left')
         df['url_extension'] = df['url'].apply(lambda x: None if x != x else str(x).split('/')[-1].split('.')[1] if(len(str(x).split('/')[-1].split('.')) > 1) else None)
-        df[(df['catalog_extension'] == 'csv') | (df['python_extension'] == 'csv') | (df['url_extension'] == 'csv') | (df['catalog_extension'] == 'xls') | (df['python_extension'] == 'xls') | (df['url_extension'] == 'xls') | (df['catalog_extension'] == 'zip') | (df['python_extension'] == 'zip') | (df['url_extension'] == 'zip')]
+        #df[(df['catalog_extension'] == 'csv') | (df['python_extension'] == 'csv') | (df['url_extension'] == 'csv') | (df['catalog_extension'] == 'xls') | (df['python_extension'] == 'xls') | (df['url_extension'] == 'xls') | (df['catalog_extension'] == 'zip') | (df['python_extension'] == 'zip') | (df['url_extension'] == 'zip')]
+        df = df[(df['python_extension'] == 'csv') | (df['url_extension'] == 'csv') | (df['python_extension'] == 'xls') | (df['url_extension'] == 'xls') | (df['python_extension'] == 'zip') | (df['url_extension'] == 'zip')]
         df.to_csv("./catalogs/"+today+"-check.csv")
         click.echo("Filter Catalok OK. Saved.")
     except Exception as e:
@@ -119,7 +120,9 @@ def record_run(count):
 
 
 def send_to_linkproxy(url):
-    r = requests.post("http://pad-01.infra.data.gouv.fr:5000", json={
+    click.echo(url)
+    click.echo("--")
+    r = requests.post("http://localhost:5010", json={
         "location": url
     })
     r.raise_for_status()
@@ -128,9 +131,12 @@ def send_to_linkproxy(url):
 
 def manageResourcesToSend(today):
     df = pd.read_csv("catalogs/"+today+"-check.csv")
+    df = df.sample(frac=1).reset_index(drop=True)
     record_run(df.shape[0])
     table = db["checks"]
+    i = 0
     for index,resource in df.iterrows():
+        i = i + 1
         try:
             res = send_to_linkproxy(resource["url"])
         except requests.HTTPError as e:
@@ -158,6 +164,7 @@ def run():
     today = todaydate.strftime("%Y-%m-%d")
     # To change tout les samedi
     if findDay(today) == 6:
+        click.echo("Already downloaded!")
         downloadCatalog(today)
     else:
         click.echo("Not a good day. Bye!")
