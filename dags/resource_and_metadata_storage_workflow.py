@@ -13,18 +13,30 @@ default_args = {
     'email_on_retry': False,
     'retries': 1,
     'retry_delay': timedelta(minutes=1),
+    'catchup': False
 }
 
 dag = DAG('dtgv_resource_and_metadata_storage', default_args=default_args, schedule_interval=timedelta(days=1))
+
+t0 = BashOperator(
+    task_id='remove_tmp_plunger_folders',
+    bash_command='rm -rf /tmp/plunger_*',
+    dag=dag)
 
 t1 = BashOperator(
     task_id='send_to_linkproxy',
     bash_command='su datamanufactory -c "cd /srv/datamanufactory/data-workflow/ && /anaconda3/bin/python 1_send_resources_to_linkproxy.py run"',
     dag=dag)
 
+
+t1bis = BashOperator(
+    task_id='send_to_linkproxy_weekly_catalog',
+    bash_command='su datamanufactory -c "cd /srv/datamanufactory/data-workflow/ && /anaconda3/bin/python 1bis_send_catalog_to_linkproxy.py run"',
+    dag=dag)
+
 t2 = BashOperator(
     task_id='wait_webhook_to_hook',
-    bash_command='su datamanufactory -c "sleep 942"',
+    bash_command='su datamanufactory -c "sleep 9200"',
     dag=dag)
 
 t3 = BashOperator(
@@ -39,6 +51,9 @@ t4 = BashOperator(
     dag=dag)
 
 
+t1.set_upstream(t0)
+t1bis.set_upstream(t0)
 t2.set_upstream(t1)
+t2.set_upstream(t1bis)
 t3.set_upstream(t2)
 t4.set_upstream(t3)
