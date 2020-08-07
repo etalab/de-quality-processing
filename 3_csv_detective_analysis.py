@@ -27,12 +27,11 @@ def save_tmp_resource(jsonfilepath):
             webhookdata = json.load(jsonfile)
             linkId = webhookdata['check']['linkId']
             print(linkId)
-            r = requests.get("http://pad-01.infra.data.gouv.fr:5000/"+linkId)
+            r = requests.get("http://localhost:5010/"+linkId)
             miniodata = r.json()
             resource_name = miniodata['downloads'][0]['files'][0]['name']
             resource_ext = miniodata['downloads'][0]['type']
             resource_url = miniodata['downloads'][0]['url']
-            resource_url = resource_url.replace("localhost:9000",'pad-01.infra.data.gouv.fr:9000')
             table = db["checks"]
             existing = table.find_one(check_id=linkId)
             resource_id = existing['resource_id']
@@ -54,7 +53,7 @@ def run():
     for jsonfile in jsonfiles:
         save_tmp_resource("static/"+today+"/"+jsonfile)
         
-    subprocess.Popen("python csvdetective/csvanalysis.py /tmp/dataworkflow ./csvdetective/analysis_results "+today, shell=True)
+    subprocess.Popen("cd csv-detective-ml && python analyze_csv_cli.py /tmp/dataworkflow /srv/datamanufactory/data-workflow/csv-detective-results/ "+today+" --rb_ml_analysis=both", shell=True)
 
     #search every json file folder date today
     

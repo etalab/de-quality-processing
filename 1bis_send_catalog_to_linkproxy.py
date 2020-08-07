@@ -8,6 +8,7 @@ import urllib
 import pandas as pd
 from queue import Queue
 from threading import Thread
+import ssl
 
 records = []
 
@@ -97,6 +98,7 @@ def filterCatalog(today):
 
 def downloadCatalog(today):
     try:
+        ssl._create_default_https_context = ssl._create_unverified_context
         url = 'https://www.data.gouv.fr/fr/datasets/r/4babf5f2-6a9c-45b5-9144-ca5eae6a7a6d'
         urllib.request.urlretrieve(url, './catalogs/'+today+'.csv')
         click.echo("Download Catalog OK.")
@@ -163,7 +165,7 @@ def run():
     todaydate = date.today()
     today = todaydate.strftime("%Y-%m-%d")
     # To change tout les samedi
-    if findDay(today) == 6:
+    if findDay(today) == 3:
         downloadCatalog(today)
     else:
         click.echo("Not a good day. Bye!")
