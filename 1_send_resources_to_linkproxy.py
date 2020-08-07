@@ -77,33 +77,36 @@ def handle_dataset(dataset, last_run):
     count_ignored = 0
     table = db["checks"]
     for resource in dataset["resources"]:
-        modified_date = datetime.fromisoformat(resource["last_modified"])
-        if last_run > modified_date:
-            continue
-        if any([excl in resource["url"] for excl in EXCLUDED_PATTERNS]):
-            count_ignored += 1
-            continue
         try:
-            res = send_to_linkproxy(resource["url"])
-        except requests.HTTPError as e:
-            click.secho(f"Error while creating check: {e}", err=True, fg="red")
-        else:
-            count += 1
-            existing = table.find_one(check_id=res["_id"], dataset_id=dataset["id"], resource_id=resource["id"])
-            data = {
-                "check_id": res["_id"],
-                "modified_at": datetime.now(),
-                "dataset_id": dataset["id"],
-                "resource_id": resource["id"],
-                "url": resource["url"],
-                "dataset_title":dataset["title"],
-                "resource_title":resource["title"]
-            }
-            if not existing:
-                data["created_at"] = datetime.now()
-                table.insert(data)
+            modified_date = datetime.fromisoformat(resource["last_modified"])
+            if last_run > modified_date:
+                continue
+            if any([excl in resource["url"] for excl in EXCLUDED_PATTERNS]):
+                count_ignored += 1
+                continue
+            try:
+                res = send_to_linkproxy(resource["url"])
+            except requests.HTTPError as e:
+                click.secho(f"Error while creating check: {e}", err=True, fg="red")
             else:
-                table.update(data, ["check_id", "resource_id", "dataset_id"])
+                count += 1
+                existing = table.find_one(check_id=res["_id"], dataset_id=dataset["id"], resource_id=resource["id"])
+                data = {
+                    "check_id": res["_id"],
+                    "modified_at": datetime.now(),
+                    "dataset_id": dataset["id"],
+                    "resource_id": resource["id"],
+                    "url": resource["url"],
+                    "dataset_title":dataset["title"],
+                    "resource_title":resource["title"]
+                }
+                if not existing:
+                    data["created_at"] = datetime.now()
+                    table.insert(data)
+                else:
+                    table.update(data, ["check_id", "resource_id", "dataset_id"])
+        except:
+            print("Exception in resource")
     return count, count_ignored
 
 

@@ -1,8 +1,12 @@
 config.ini
 nohup.out
 orchestrator.db
+orchestrator.db.old
 repotest
 static/
 csvdetective/analysis_results/
 catalogs/
 venv/
+csv-detective-ml/
+csv-detective-results/
+csvdetective/

@@ -69,7 +69,7 @@ cats = ['siret',
  'code_csp_insee',
  'twitter']
 
-with open("/srv/datamanufactory/data-workflow/csvdetective/analysis_results/"+daytoprocess+".json", "r") as filo:
+with open("/srv/datamanufactory/data-workflow/csv-detective-results/"+daytoprocess+".json", "r") as filo:
     jsonfile = json.load(filo)
 
 table = db["checks"]
@@ -80,6 +80,7 @@ for i in range(len(jsonfile)):
     jsonfile[i][1]['dataset_id'] = jsonfile[i][0].split("---")[0]
     jsonfile[i][1]['resource_id'] = jsonfile[i][0].split("---")[1].split('.')[0]
     print(i,end=" - ")
+    print(jsonfile[i][1]['resource_id'])
 
     
     existing = table.find_one(dataset_id=jsonfile[i][1]['dataset_id'], resource_id=jsonfile[i][1]['resource_id'], order_by='-created_at')
@@ -88,39 +89,44 @@ for i in range(len(jsonfile)):
     jsonfile[i][1]['resource_url'] = existing['url']
     # a corriger : 
     jsonfile[i][1]['dataset_title'] = existing['dataset_title']
-    print(jsonfile[i][1]['resource_id'])
-    el = jsonfile[i][1]
-    
-    el['columns_types'] = []
-    for key in cats:
-        el[key] = []
-    if "columns_ml" in jsonfile[i][1]:
-        for j in range(len(jsonfile[i][1]['columns_ml'])):
-            for key in jsonfile[i][1]['columns_ml']:
-                if jsonfile[i][1]['columns_ml'][key][0] in cats:
-                    el[jsonfile[i][1]['columns_ml'][key][0]].append(key)
-                    el['columns_types'].append(jsonfile[i][1]['columns_ml'][key][0])
-            for key in jsonfile[i][1]['columns_rb']:
-                if jsonfile[i][1]['columns_rb'][key][0] in cats:
-                    el[jsonfile[i][1]['columns_rb'][key][0]].append(key)
-                    el['columns_types'].append(jsonfile[i][1]['columns_rb'][key][0])
 
-    el['columns_types'] = list(dict.fromkeys(el['columns_types']))
-                    
-    el.pop("columns_rb",None)
-    el.pop("columns_ml",None)
-    for key in cats:
-        el[key] = list(dict.fromkeys(el[key]))
-        if(len(el[key]) == 0):
-            el.pop(key,None)
+
+    if "columns_ml" in jsonfile[i][1]:
+        jsonfile[i][1].pop("columns_ml")
+        print("columns ml removed")
+
+    if "columns" in jsonfile[i][1]:
+        arr2 = []
+        for key in jsonfile[i][1]['columns']:
+            arr = []
+            for m in (range(len(jsonfile[i][1]['columns'][key]))):
+                if((float(jsonfile[i][1]['columns'][key][m]['score_ml']) < 0.1) & (float(jsonfile[i][1]['columns'][key][m]['score_rb']) < 0.1)):
+                    arr.append(m)
+            if(len(arr) == len(jsonfile[i][1]['columns'][key])):
+                arr2.append(key)
+            else:
+                arr.sort(reverse=True)
+                if(arr is not None):
+                    for a in arr:
+                        jsonfile[i][1]['columns'][key].pop(a)
+        arr2.sort(reverse=True)
+        if(arr2 is not None):
+            for a in arr2:
+                jsonfile[i][1]['columns'].pop(a)
+
+
+    el = jsonfile[i][1]
+
     el['ingested_date'] = daytoprocess
     
+
+
     docket_content = json.dumps(el)
     print(docket_content)
 
     #es.delete_by_query(index='csvresource', body={"query": {"bool": {"must": [{ "match": { "dataset_id": el['dataset_id']}}, { "match": { "resource_id": el['resource_id']}}]}, "must_not" : [{ "match" : { "ingested_date" : "tototo" }}]}})
 
-    es.index(index='csvlinkproxy', ignore=400, body=json.loads(docket_content))
+    es.index(index='csvmetadtgv', ignore=400, body=json.loads(docket_content))
     print("------")
 
 print("import into ELK ok")
