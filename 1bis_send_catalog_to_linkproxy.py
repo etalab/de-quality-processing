@@ -86,7 +86,7 @@ def check_mime_from_header(df):
 def filterCatalog(today):
     try:
         df = pd.read_csv("./catalogs/"+today+".csv",sep=";")
-        df = df[df['downloads'] > 10]
+        df = df[df['downloads'] > 5]
         check_mime_from_header(df)
         print(df.shape[0])
         df = pd.DataFrame(records)
@@ -165,7 +165,7 @@ def run():
     todaydate = date.today()
     today = todaydate.strftime("%Y-%m-%d")
     # To change tout les samedi
-    if findDay(today) == 3:
+    if findDay(today) == 0:
         downloadCatalog(today)
     else:
         click.echo("Not a good day. Bye!")
